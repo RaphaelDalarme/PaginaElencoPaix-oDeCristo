@@ -1,10 +1,4 @@
-<<<<<<< HEAD
+HEAD
 Flask
 Flask-SQLAlchemy
 Werkzeug
-=======
-Flask
-Flask-SQLAlchemy
-Werkzeug
->>>>>>> dc9f5d2 (atualização de segurança para somente o adm poder alterar as informações)
-gunicorn
