@@ -56,18 +56,24 @@
                     </div>
                     <div class="card-body">
                         <div class="divider"></div>
-                        <button type="button" class="btn-edit" onclick="abrirEdicao('{{ p.id }}', '{{ p.nome }}', '{{ p.ator }}')">
-                            ✏️ Editar Ficha
-                        </button>
+                        {% if session.logged_in %}
+                            <button type="button" class="btn-edit" 
+                                onclick="prepararEdicao('{{ p.id }}', '{{ p.nome }}', '{{ p.ator }}', '{{ p.tom_voz }}', '{{ p.comportamento }}', '{{ p.figurino }}')">
+                                ✏️ Editar Ficha
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </div> 
             {% endfor %}
         </div>
 
-        <div class="admin-area">
-            <button onclick="abrirModal()" class="btn-admin">⚙️ Novo Personagem</button>
-        </div>
+        {% if session.logged_in %}
+            <div class="admin-area">
+                <button onclick="abrirModalNovo()" class="btn-admin">⚙️ Novo Personagem</button>
+                <a href="/logout" style="color: #666; margin-left: 20px;">Sair</a>
+            </div>
+        {% endif %}
     </main>
 
     <div id="modalCadastro" class="modal">
