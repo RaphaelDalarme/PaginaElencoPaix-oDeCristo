@@ -44,11 +44,6 @@ Este sistema foi concebido para resolver a necessidade de centralização de inf
   </tr>
 </table>
 
-## 💻 Visualização do Sistema
-<p align="center">
-  <img src="https://via.placeholder.com/800x400/111/fff?text=Dashboard+do+Elenco+2026" width="100%" alt="Preview do Sistema">
-</p>
-
 ## ⚙️ Instalação e Uso
 1. Clone o repositório: `git clone https://github.com/RaphaelDalarme/PaginaElencoPaix-oDeCristo.git`
 2. Instale as dependências: `pip install -r requirements.txt`
