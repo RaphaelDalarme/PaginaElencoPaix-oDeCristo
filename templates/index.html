@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elenco Paixão de Cristo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    
+    <header class="main-header">
+        <div class="header-content">
+            <span class="ano-tag">2026</span>
+            <h1>Paixão de Cristo</h1>
+            <h2 class="sub-header">Encenação Ministério de Artes São Francisco de Assis</h2>
+            <p>Direção de Arte e Caracterização</p>
+            
+            <div class="search-container-hero">
+                <input type="text" id="busca" class="search-input" placeholder="BUSCAR PERSONAGEM..." onkeyup="filtrar()">
+            </div>
+        </div>
+    </header>
+
+    <main class="container-search">
+        <div class="cards-grid">
+            {% for p in personagens %}
+            <div class="card" data-nome="{{ p.nome.lower() }}" onclick="expandirCard(this)">
+                
+                <div class="card-top-info">
+                    <h3>{{ p.nome }}</h3>
+                    <p class="actor-mini">Ator: {{ p.ator }}</p>
+                </div>
+
+                {% if p.foto_path %}
+                <img src="{{ url_for('static', filename='uploads/' + p.foto_path) }}" class="card-img">
+                {% else %}
+                <div class="no-img">Sem Foto</div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <div class="divider"></div>
+                    
+                    <div class="info-block">
+                        <span class="label">📢 Voz</span>
+                        <p>{{ p.tom_voz }}</p>
+                    </div>
+
+                    <div class="info-block">
+                        <span class="label">🎭 Comportamento</span>
+                        <p>{{ p.comportamento }}</p>
+                    </div>
+
+                    <div class="info-block">
+                        <span class="label">🧥 Figurino</span>
+                        <p>{{ p.figurino }}</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="divider"></div>
+                        <button type="button" class="btn-edit" onclick="abrirEdicao('{{ p.id }}', '{{ p.nome }}', '{{ p.ator }}')">
+                            ✏️ Editar Ficha
+                        </button>
+                    </div>
+                </div>
+            </div> 
+            {% endfor %}
+        </div>
+
+        <div class="admin-area">
+            <button onclick="abrirModal()" class="btn-admin">⚙️ Novo Personagem</button>
+        </div>
+    </main>
+
+    <div id="modalCadastro" class="modal">
+        <div class="modal-content">
+            <h2>Nova Ficha Técnica</h2>
+            <form action="/adicionar" method="POST" enctype="multipart/form-data">
+                <div class="form-grid">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Personagem</label>
+                            <input type="text" name="nome" placeholder="Ex: Jesus" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ator</label>
+                            <input type="text" name="ator" placeholder="Nome do ator">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tom de Voz</label>
+                            <input type="text" name="tom_voz" placeholder="Ex: Solene">
+                        </div>
+                        <div class="form-group">
+                            <label>Foto de Inspiração</label>
+                            <div class="file-group">
+                                <input type="file" name="foto">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Comportamento</label>
+                        <textarea name="comportamento" rows="2" placeholder="Descreva as atitudes..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Figurino</label>
+                        <textarea name="figurino" rows="2" placeholder="Detalhes das vestes..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-save">Salvar Personagem</button>
+                    <button type="button" class="btn-close-modal" onclick="fecharModal()">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <img src="{{ url_for('static', filename='logo_ministerio.png') }}" alt="Logo Ministério de Artes" class="footer-logo">
+            <p>&copy; 2026 - Ministério de Artes São Francisco de Assis</p>
+        </div>
+    </footer>
+
+    <script>
+        // Função para abrir o modal
+        function abrirModal() {
+            document.getElementById('modalCadastro').style.display = 'flex';
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('modalCadastro').style.display = 'none';
+        }
+
+        // Fechar ao clicar fora do conteúdo branco
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalCadastro');
+            if (event.target == modal) {
+                fecharModal();
+            }
+        }
+
+        function filtrar() {
+            let v = document.getElementById('busca').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                if (v !== "") c.classList.remove('expanded');
+                c.style.display = c.dataset.nome.includes(v) ? 'block' : 'none';
+            });
+        }
+
+        function expandirCard(elemento) {
+            const jaEstaAberto = elemento.classList.contains('expanded');
+
+            document.querySelectorAll('.card.expanded').forEach(c => {
+                c.classList.remove('expanded');
+            });
+
+            if (!jaEstaAberto) {
+                elemento.classList.add('expanded');
+            }
+        }
+        function abrirEdicao(id, nome, ator) {
+            // 1. Abre o modal que já temos
+            abrirModal();
+            
+            // 2. Muda o título do modal
+            document.querySelector('#modalCadastro h2').innerText = "Editar Ficha";
+            
+            // 3. Preenche os campos com o que já existe
+            document.getElementsByName('nome')[0].value = nome;
+            document.getElementsByName('ator')[0].value = ator;
+            
+            // 4. Muda a rota do formulário para "atualizar" em vez de "adicionar"
+            // Isso é importante para o seu back-end saber que é um update!
+            const form = document.querySelector('#modalCadastro form');
+            form.action = '/editar/' + id; 
+        }
+
+        function prepararEdicao(id, nome, ator, voz, comp, fig) {
+            // 1. Abre o modal
+            abrirModal();
+            
+            // 2. Muda o título e o texto do botão
+            document.querySelector('#modalCadastro h2').innerText = "Editar Personagem";
+            document.querySelector('.btn-save').innerText = "Salvar Alterações";
+            
+            // 3. Preenche os campos (usando os nomes dos inputs do seu HTML)
+            document.getElementsByName('nome')[0].value = nome;
+            document.getElementsByName('ator')[0].value = ator;
+            document.getElementsByName('tom_voz')[0].value = voz;
+            document.getElementsByName('comportamento')[0].value = comp;
+            document.getElementsByName('figurino')[0].value = fig;
+            
+            // 4. MUDA A ROTA: Agora o form vai para /editar/ID
+            const form = document.querySelector('#modalCadastro form');
+            form.action = '/editar/' + id;
+        }
+
+        // Opcional: Ajuste o abrirModal comum para resetar o título quando for um NOVO cadastro
+        function abrirModalNovo() {
+            document.querySelector('#modalCadastro h2').innerText = "Nova Ficha Técnica";
+            document.querySelector('.btn-save').innerText = "Salvar Personagem";
+            document.querySelector('#modalCadastro form').action = '/adicionar';
+            document.querySelector('#modalCadastro form').reset(); // Limpa os campos
+            abrirModal();
+        }
+    </script>
+
+</body>
+</html>

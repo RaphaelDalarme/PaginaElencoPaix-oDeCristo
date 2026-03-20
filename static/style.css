@@ -1,0 +1,461 @@
+/* SISTEMA DE ELENCO - PAIXÃO DE CRISTO 
+   Foco: Impacto Visual, Tipografia Robusta e Navegação Fluida
+*/
+
+:root {
+    --bg-body: #0a0a0a;
+    --card-bg: #ffffff;
+    --accent: #ae2012;
+    --accent-hover: #8e1a0e;
+    --text-dark: #1a1a1a;
+    --text-muted: #636e72;
+    --text-light: #f5f5f5;
+    --border-color: #f0f0f0;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --shadow-sm: 0 5px 15px rgba(0,0,0,0.1);
+    --shadow-md: 0 15px 35px rgba(0,0,0,0.3);
+    --shadow-lg: 0 25px 50px rgba(0,0,0,0.5);
+    --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 1. Reset e Base */
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
+                url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2000') no-repeat center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 2. Header Principal */
+.main-header { 
+    text-align: center; 
+    padding: 80px 20px 40px; 
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.main-header h1 { 
+    font-size: 3.5rem; 
+    font-weight: 900;
+    text-transform: uppercase; 
+    letter-spacing: 10px; 
+    margin: 0; 
+    background: linear-gradient(to bottom, #ffffff, #aaaaaa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.main-header p { 
+    color: var(--accent); 
+    margin-top: 10px; 
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+/* 3. Barra de Busca Cinema Glass */
+.container-search { 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 0 40px 100px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.search-input {
+    width: 100%; 
+    max-width: 800px;
+    padding: 22px 45px;
+    border-radius: 100px; 
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.08) !important; 
+    backdrop-filter: blur(15px); 
+    color: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    outline: none;
+    transition: var(--transition);
+    text-align: center; 
+    letter-spacing: 2px;
+    margin-bottom: 60px;
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-3px);
+}
+
+/* 4. Grid de Cards */
+.cards-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); 
+    gap: 40px; 
+    width: 100%;
+}
+
+/* 5. Estrutura do Card */
+.card { 
+    background: var(--card-bg); 
+    border-radius: var(--radius-lg); 
+    overflow: hidden; 
+    box-shadow: var(--shadow-md); 
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    max-height: 520px; /* Tamanho fechado */
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.card:hover { 
+    transform: translateY(-10px); 
+    box-shadow: var(--shadow-lg);
+}
+
+/* 6. Header do Card (Nome/Ator) */
+.card-top-info {
+    padding: 20px;
+    background: #ffffff;
+    text-align: center;
+    z-index: 2;
+}
+
+.card-top-info h3 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.actor-mini {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* 7. Imagem do Card */
+.card-img { 
+    width: 100%; 
+    height: 400px; 
+    display: block; 
+    object-fit: cover; 
+    object-position: top;
+    background: #000;
+    transition: var(--transition);
+    border-bottom: 3px solid var(--accent);
+}
+
+/* 8. Estado Expandido (IMPORTANTE) */
+.card.expanded {
+    max-height: 85vh !important; 
+    overflow-y: auto !important; 
+    transform: scale(1.02);
+    z-index: 100;
+}
+
+.card.expanded .card-img {
+    height: auto;
+    max-height: 600px;
+    object-fit: contain;
+}
+
+.card.expanded .card-body {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 9. Corpo do Card (Conteúdo Oculto) */
+.card-body { 
+    padding: 0 35px 40px; 
+    opacity: 0;
+    display: none; /* Escondido por padrão */
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    color: var(--text-dark);
+}
+
+.divider { 
+    height: 1px; 
+    background: linear-gradient(to right, var(--border-color), transparent); 
+    margin: 25px 0; 
+}
+
+.info-block { 
+    margin-bottom: 20px; 
+    padding-left: 15px;
+    border-left: 3px solid var(--border-color);
+}
+
+.info-block .label { 
+    font-size: 0.75rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    color: var(--text-muted); 
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+}
+
+.info-block p { 
+    margin: 0; 
+    font-size: 1.05rem; 
+    line-height: 1.5; 
+    color: #333;
+}
+
+/* 10. Admin e Modais */
+.btn-admin { 
+    background: rgba(255,255,255,0.05); 
+    border: 1px solid rgba(255,255,255,0.2); 
+    color: #fff; 
+    padding: 18px 45px; 
+    border-radius: 100px; 
+    cursor: pointer; 
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: var(--transition);
+    margin-top: 50px;
+}
+
+.btn-admin:hover { 
+    background: #fff; 
+    color: var(--bg-body); 
+}
+
+.modal { 
+    display: none; 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.95); 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 2000; 
+    backdrop-filter: blur(15px); 
+}
+
+.modal-content { 
+    background: #fff; 
+    padding: 50px; 
+    border-radius: 30px; 
+    width: 90%; 
+    max-width: 600px; 
+    color: var(--text-dark); 
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* 11. Responsividade */
+@media (max-width: 768px) { 
+    .cards-grid { grid-template-columns: 1fr; } 
+    .main-header h1 { font-size: 2.2rem; }
+}
+
+/* Scrollbar Style */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-body); }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* --- AJUSTE FINO DO MODAL DE CADASTRO --- */
+
+.modal-content {
+    background: #ffffff;
+    padding: 45px;
+    border-radius: 30px;
+    width: 95%;
+    max-width: 600px; /* Largura ideal para leitura */
+}
+
+.modal-content h2 {
+    color: #000;
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 35px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Container dos campos */
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Linha com dois campos (Ex: Personagem e Ator) */
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row > .form-group {
+    flex: 1; /* Faz ambos terem o mesmo tamanho */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #888;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+
+/* Estilo Premium dos Inputs */
+.modal-content input[type="text"],
+.modal-content textarea {
+    background: #f4f4f4;
+    border: 2px solid transparent;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+    background: #fff;
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 5px 15px rgba(174, 32, 18, 0.1);
+}
+
+/* Ajuste específico para o seletor de arquivo */
+.file-group {
+    background: #f4f4f4;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px dashed #ccc;
+}
+
+/* Botões do Rodapé */
+.modal-footer {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.btn-save {
+    background: var(--accent) !important;
+    color: white !important;
+    flex: 2; /* Botão salvar é mais largo */
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-close-modal {
+    background: #eee !important;
+    color: #666 !important;
+    flex: 1;
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: var(--transition);
+}
+
+.btn-edit:hover {
+    background: #e0e0e0;
+    color: #000;
+}
+
+/* --- ESTILOS DO CABEÇALHO --- */
+.ano-tag {
+    background: var(--accent);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.sub-header {
+    font-size: 1.2rem;
+    color: #ccc;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+/* --- ESTILOS DO RODAPÉ --- */
+.main-footer {
+    background: #000;
+    padding: 60px 20px;
+    margin-top: 80px;
+    text-align: center;
+    border-top: 1px solid #222;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-logo {
+    height: 80px; /* Ajuste conforme o formato da sua logo */
+    width: auto;
+    transition: var(--transition);
+}
+
+.footer-logo:hover {
+    filter: none; /* Volta a cor original ao passar o mouse */
+    transform: scale(1.05);
+}
+
+.main-footer p {
+    color: #666;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
